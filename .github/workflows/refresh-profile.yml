@@ -1,0 +1,42 @@
+name: Refresh profile
+
+# Redraws the graphics on github.com/mjajal from my contribution calendar.
+on:
+  schedule:
+    - cron: "23 10 * * *" # once a day, early morning US Eastern
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/refresh-profile.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-profile
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Draw the graphics
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/build_profile.py
+
+      - name: Commit if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "Refresh profile graphics"
+            git push
+          fi
