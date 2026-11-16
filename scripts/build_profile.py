@@ -193,8 +193,8 @@ def streaks(days: dict[str, int], today: dt.date) -> tuple[int, int]:
 # ------------------------------------------------------------------- header
 def build_header() -> str:
     width, height = 880, 250
-    phrases = ["data head first", "troubleshoot master", "deep diver", "data architect"]
-    char_w = 11.0
+    phrases = ["data head first", "AI agent master", "deep-dive troubleshooter", "data architect"]
+    char_w = 10.4
     slot = 4.0
     total = slot * len(phrases)
 
@@ -308,7 +308,7 @@ def build_header() -> str:
 <rect x="{hub_left}" y="{hub_y - 20}" width="{hub_right - hub_left}" height="40" rx="12" fill="#1c1215" stroke="{RED}" stroke-width="1.4"/>
 <text class="mono hub" x="{(hub_left + hub_right) / 2:.0f}" y="{hub_y + 4}" text-anchor="middle">data platform</text>
 """
-    label = "Maulik Jajal, Senior Data Engineer: data head first, troubleshoot master, deep diver, data architect"
+    label = "Maulik Jajal, Senior Data Engineer: data head first, AI agent master, deep-dive troubleshooter, data architect"
     return svg(width, height, label, css, defs, body)
 
 

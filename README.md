@@ -1,7 +1,7 @@
-<img src="./assets/header.svg" width="100%" alt="Maulik Jajal, Senior Data Engineer. Data head first, troubleshoot master, deep diver, data architect." />
+<img src="./assets/header.svg" width="100%" alt="Maulik Jajal, Senior Data Engineer. Data head first, AI agent master, deep-dive troubleshooter, data architect." />
 
 <p align="center">
-  <b>Hi, I'm Maulik Jajal.</b> A data head first, then troubleshoot master, deep diver and data architect. Usually all four before lunch.
+  <b>Hi, I'm Maulik Jajal.</b> A data head first, then AI agent master, deep-dive troubleshooter and data architect. Usually all four before lunch.
 </p>
 
 <p align="center">
