@@ -5,16 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/maulik-jajal/"><img src="./assets/linkedin.svg" height="42" alt="Let's talk on LinkedIn" /></a>
+  <a href="https://www.linkedin.com/in/maulik-jajal/" target="_blank" rel="noopener noreferrer"><img src="./assets/linkedin.svg" height="42" alt="Let's talk on LinkedIn" /></a>
 </p>
-
-### My work, in 3D
-
-<img src="./assets/contrib-3d.svg" width="100%" alt="3D view of my GitHub contributions over the last 12 months" />
-
-<sub>Almost everything I build lives in private repos, so this skyline is the public view of it. Each block is one day, and the taller it stands, the more I shipped.</sub>
-
-<img src="./assets/rhythm.svg" width="100%" alt="My contributions by month, by weekday and by year" />
 
 ### Things I code with
 
@@ -77,20 +69,30 @@
   <img alt="SAP BusinessObjects" src="https://img.shields.io/badge/-SAP_BusinessObjects-0FAAFF?style=flat-square&logo=sap&logoColor=white" />
 </p>
 
+### My work
+
+<img src="./assets/contrib-3d.svg" width="100%" alt="3D view of my GitHub contributions over the last 12 months" />
+
+<sub>Almost everything I build lives in private repos, so this skyline is the public view of it. Each block is one day, and the taller it stands, the more I shipped.</sub>
+
+<img src="./assets/rhythm.svg" width="100%" alt="My contributions by month, by weekday and by year" />
+
 ### The road so far
 
-<img src="./assets/journey.svg" width="100%" alt="Career timeline from League (2023 to now) back through Innovaccer, d2i, Stevens Institute of Technology and Infosys" />
+<img src="./assets/journey.svg" width="100%" alt="Career timeline from League (2023 to now) back through Innovaccer, d2i, Stevens Institute of Technology, Infosys and Dharmsinh Desai University" />
 
 ### What I geek out on
 
+- AI agents and MCP servers that take the busywork, so I can stay focused on data system architecture
+- Building ML, data science, LLM and RAG pipelines
 - Moving live data to a new home without anyone noticing it moved
 - Streaming and batch pipelines that stay boring in production
 - Chasing a bug to its root cause, not the nearest workaround
 - Healthcare data that actually talks to other healthcare data (FHIR, HL7)
-- AI agents and MCP servers that take real work off the on-call rotation
+- Automation that takes real work off the on-call rotation
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/maulik-jajal/"><img src="./assets/linkedin.svg" height="42" alt="Let's talk on LinkedIn" /></a>
+  <a href="https://www.linkedin.com/in/maulik-jajal/" target="_blank" rel="noopener noreferrer"><img src="./assets/linkedin.svg" height="42" alt="Let's talk on LinkedIn" /></a>
 </p>
 
 <p align="center">

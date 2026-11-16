@@ -192,7 +192,7 @@ def streaks(days: dict[str, int], today: dt.date) -> tuple[int, int]:
 
 # ------------------------------------------------------------------- header
 def build_header() -> str:
-    width, height = 880, 230
+    width, height = 880, 250
     phrases = ["data head first", "troubleshoot master", "deep diver", "data architect"]
     char_w = 11.0
     slot = 4.0
@@ -225,7 +225,8 @@ def build_header() -> str:
 .ph0{{opacity:1}}
 .cover{{transform:translateX({len(phrases[0]) * char_w:.0f}px);animation:type {total:.0f}s infinite}}
 .caret{{animation:blink 1s steps(1,end) infinite}}
-.node{{font-size:11.5px;fill:{SOFT}}}
+.node{{font-size:11px;fill:{SOFT}}}
+.col{{font-size:9px;letter-spacing:2px;font-weight:600;fill:{DIM}}}
 .hub{{font-size:12px;font-weight:700;fill:{TEXT}}}
 .pipe{{stroke:{BORDER};stroke-width:1.4}}
 @keyframes show{{0%,{share - 0.05:.2f}%{{opacity:1}}{share:.2f}%,100%{{opacity:0}}}}
@@ -235,49 +236,71 @@ def build_header() -> str:
     defs = f"""
 <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1" fill="{LINE}"/></pattern>
 <radialGradient id="glowRed" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(60 20) scale(460 300)"><stop stop-color="{RED}" stop-opacity=".2"/><stop offset="1" stop-color="{RED}" stop-opacity="0"/></radialGradient>
-<radialGradient id="glowGreen" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(820 220) scale(380 240)"><stop stop-color="{GREENS[4]}" stop-opacity=".1"/><stop offset="1" stop-color="{GREENS[4]}" stop-opacity="0"/></radialGradient>
-<clipPath id="pill"><rect x="45" y="153" width="318" height="40" rx="9"/></clipPath>
+<radialGradient id="glowGreen" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(820 240) scale(380 240)"><stop stop-color="{GREENS[4]}" stop-opacity=".1"/><stop offset="1" stop-color="{GREENS[4]}" stop-opacity="0"/></radialGradient>
+<clipPath id="pill"><rect x="45" y="163" width="318" height="40" rx="9"/></clipPath>
 <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
 """
 
     typed = "".join(
-        f'<text class="mono typed ph ph{index}" x="88" y="179" textLength="{len(phrase) * char_w:.0f}" '
+        f'<text class="mono typed ph ph{index}" x="88" y="189" textLength="{len(phrase) * char_w:.0f}" '
         f'lengthAdjust="spacingAndGlyphs" style="animation-delay:{index * slot:.0f}s">{esc(phrase)}</text>'
         for index, phrase in enumerate(phrases)
     )
 
-    rows = [58, 115, 172]
-    sources = ["batch", "streaming", "CDC"]
-    sinks = ["warehouse", "APIs", "AI agents"]
-    hub_left, hub_right, hub_y = 594, 706, 115
+    # the data-flow picture: what comes in, the platform, what it serves
+    rows = [62, 96, 130, 164, 198]
+    sources = ["batch", "streaming", "CDC", "events", "APIs"]
+    sinks = ["warehouse", "backend APIs", "MCP server", "dashboards", "metrics"]
+    consumers = [("AI agents", 113), ("LLM", 147)]  # fed through the MCP server
+    src_x, src_w = 392, 76
+    hub_left, hub_right, hub_y = 508, 614, 130
+    sink_x, sink_w = 654, 92
+    ai_x, ai_w = 776, 72
+    served = "#ff7b72"
+
+    def dot(path: str, color: str, start: float, dur: float) -> str:
+        timing = f'dur="{dur}s" begin="-{start:.1f}s" repeatCount="indefinite"'
+        return (
+            f'<circle r="2.6" fill="{color}" opacity="0"><animateMotion {timing} path="{path}"/>'
+            f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.85;1" {timing}/></circle>'
+        )
+
+    def pill(x: float, y: float, w: float, name: str, accent: bool = False) -> str:
+        bright = f' style="fill:{TEXT}"' if accent else ""
+        return (
+            f'<rect x="{x}" y="{y - 12}" width="{w}" height="24" rx="12" fill="{PANEL}" stroke="{served if accent else BORDER}"/>'
+            f'<text class="mono node" x="{x + w / 2:.0f}" y="{y + 4}" text-anchor="middle"{bright}>{name}</text>'
+        )
+
     pipes, dots, nodes = [], [], []
     for index, y in enumerate(rows):
-        into = f"M540 {y}C572 {y} 564 {hub_y} {hub_left} {hub_y}"
-        out = f"M{hub_right} {hub_y}C736 {hub_y} 726 {y} 756 {y}"
+        into = f"M{src_x + src_w} {y}C{src_x + src_w + 22} {y} {hub_left - 22} {hub_y} {hub_left} {hub_y}"
+        out = f"M{hub_right} {hub_y}C{hub_right + 22} {hub_y} {sink_x - 22} {y} {sink_x} {y}"
         pipes.append(f'<path class="pipe" d="{into}"/><path class="pipe" d="{out}"/>')
-        for path, color, start in ((into, GREENS[4], index * 0.7), (out, "#ff7b72", index * 0.7 + 1.1)):
-            for shift in (0, 1.3):
-                timing = f'dur="2.6s" begin="-{start + shift:.1f}s" repeatCount="indefinite"'
-                dots.append(
-                    f'<circle r="2.6" fill="{color}" opacity="0"><animateMotion {timing} path="{path}"/>'
-                    f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.85;1" {timing}/></circle>'
-                )
-        nodes.append(
-            f'<rect x="460" y="{y - 13}" width="80" height="26" rx="13" fill="{PANEL}" stroke="{BORDER}"/>'
-            f'<text class="mono node" x="500" y="{y + 4}" text-anchor="middle">{sources[index]}</text>'
-            f'<rect x="756" y="{y - 13}" width="88" height="26" rx="13" fill="{PANEL}" stroke="{BORDER}"/>'
-            f'<text class="mono node" x="800" y="{y + 4}" text-anchor="middle">{sinks[index]}</text>'
-        )
+        for shift in (0, 1.3):
+            dots.append(dot(into, GREENS[4], index * 0.5 + shift, 2.6))
+            dots.append(dot(out, served, index * 0.5 + 1.1 + shift, 2.6))
+        nodes.append(pill(src_x, y, src_w, sources[index]))
+        nodes.append(pill(sink_x, y, sink_w, sinks[index], accent=sinks[index] == "MCP server"))
+    for index, (name, y) in enumerate(consumers):
+        path = f"M{sink_x + sink_w} {hub_y}C{sink_x + sink_w + 16} {hub_y} {ai_x - 16} {y} {ai_x} {y}"
+        pipes.append(f'<path class="pipe" d="{path}"/>')
+        dots.append(dot(path, served, index * 0.8, 1.6))
+        nodes.append(pill(ai_x, y, ai_w, name))
+    nodes.append(
+        f'<text class="col" x="{src_x + src_w / 2:.0f}" y="38" text-anchor="middle">INGEST</text>'
+        f'<text class="col" x="{sink_x + sink_w / 2:.0f}" y="38" text-anchor="middle">SERVE</text>'
+    )
 
     body = f"""
 <g clip-path="url(#card)"><rect width="{width}" height="{height}" fill="url(#dots)"/><rect width="{width}" height="{height}" fill="url(#glowRed)"/><rect width="{width}" height="{height}" fill="url(#glowGreen)"/></g>
-<text class="role" x="46" y="50">SENIOR DATA ENGINEER · DATA PLATFORM</text>
-<text class="name" x="44" y="100">Maulik Jajal</text>
-<text class="tag" x="46" y="130">Building the platforms data moves through.</text>
-<rect x="44.5" y="152.5" width="319" height="41" rx="10" fill="{PANEL}" stroke="{BORDER}"/>
-<text class="mono typed" x="62" y="179" style="fill:{RED}">&gt;</text>
+<text class="role" x="46" y="60">SENIOR DATA ENGINEER · DATA PLATFORM</text>
+<text class="name" x="44" y="110">Maulik Jajal</text>
+<text class="tag" x="46" y="140">Building the platforms data moves through.</text>
+<rect x="44.5" y="162.5" width="319" height="41" rx="10" fill="{PANEL}" stroke="{BORDER}"/>
+<text class="mono typed" x="62" y="189" style="fill:{RED}">&gt;</text>
 {typed}
-<g clip-path="url(#pill)"><g transform="translate(88 158)"><g class="cover"><rect width="300" height="30" fill="{PANEL}"/><rect class="caret" x="2" y="4" width="9" height="22" rx="1.5" fill="{RED}"/></g></g></g>
+<g clip-path="url(#pill)"><g transform="translate(88 168)"><g class="cover"><rect width="300" height="30" fill="{PANEL}"/><rect class="caret" x="2" y="4" width="9" height="22" rx="1.5" fill="{RED}"/></g></g></g>
 {''.join(pipes)}
 {''.join(dots)}
 {''.join(nodes)}
@@ -501,11 +524,13 @@ JOURNEY = [
     ("2022 → 2023", "Innovaccer", "Senior Data Engineer",
      "Multi-source FHIR pipelines and reusable integration templates on Snowflake and AWS", ""),
     ("2018 → 2022", "d2i", "Data Engineer → Senior Data Engineer",
-     "Real-time and batch hospital data on AWS: EHR integrations, Spark, pipeline automation", ""),
+     "Real-time and batch hospital data on AWS: EHR integrations, pipeline and platform automation", ""),
     ("2017 → 2018", "Stevens Institute of Technology", "M.S. Computer Science",
      "Master's Fellowship · Course Assistant for Data Structures & Algorithms", ""),
     ("2015 → 2016", "Infosys", "Systems Engineer, Test",
      "SAP testing and test automation. Where I learned to break things on purpose.", ""),
+    ("2011 → 2015", "Dharmsinh Desai University", "B.Tech, Information Technology",
+     "Nadiad, Gujarat, India. Where it all started.", ""),
 ]
 
 
@@ -548,7 +573,7 @@ def build_journey() -> str:
 <path d="M176 {positions[0] - 5}V{positions[-1] - 5}" stroke="{BORDER}" stroke-width="1.5"/>
 {''.join(rows)}
 """
-    return svg(width, height, "Career timeline, from now back to 2015", css, "", body)
+    return svg(width, height, "Career timeline, from now back to 2011", css, "", body)
 
 
 # ----------------------------------------------------------- LinkedIn button
