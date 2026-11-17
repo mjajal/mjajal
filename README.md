@@ -1,7 +1,9 @@
-<img src="./assets/header.svg" width="100%" alt="Maulik Jajal, Senior Data Engineer. Data head first, AI agent master, deep-dive troubleshooter, data architect." />
+<img src="./assets/header.svg" width="100%" alt="Maulik Jajal, Senior Data Engineer. Data trailblazer, AI agent mastermind, relentless troubleshooter, data-platform architect." />
 
 <p align="center">
-  <b>Hi, I'm Maulik Jajal.</b> A data head first, then AI agent master, deep-dive troubleshooter and data architect. Usually all four before lunch.
+  <b>Hi, I'm Maulik Jajal.</b> Data trailblazer, AI agent mastermind, relentless troubleshooter, and data-platform architect.
+  <br />
+  <sub><i>Usually all four before lunch.</i> ☕⚡</sub>
 </p>
 
 <p align="center">
