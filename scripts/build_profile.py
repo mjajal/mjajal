@@ -36,19 +36,21 @@ DIM = "#6e7681"
 RED = "#ff3b3b"
 GREENS = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"]
 # the bars replay every LOOP seconds and step through these colours, then start over
-LOOP = 15
+LOOP = 5
 PALETTES = [
     GREENS,
     ["#161b22", "#5a2a00", "#9c4a00", "#e07b00", "#ffa630"],  # orange
     ["#161b22", "#5c1010", "#9b1c1c", "#dc3535", "#ff6b6b"],  # red
     ["#161b22", "#0c2d6b", "#1158c7", "#388bfd", "#79c0ff"],  # blue
+    ["#161b22", "#2e1065", "#5b21b6", "#8b5cf6", "#c4b5fd"],  # purple
+    ["#161b22", "#4d4000", "#8a7300", "#d4b106", "#ffe14d"],  # yellow
 ]
 # up fast, hold, drop, then stay down until the next loop (the colour switches while down)
 REPLAY = (
     "0%{transform:scaleY(0);animation-timing-function:cubic-bezier(.2,.8,.2,1)}"
-    "6%{transform:scaleY(1)}"
-    "88%{transform:scaleY(1);animation-timing-function:ease-in}"
-    "90%,100%{transform:scaleY(0)}"
+    "16%{transform:scaleY(1)}"
+    "80%{transform:scaleY(1);animation-timing-function:ease-in}"
+    "86%,100%{transform:scaleY(0)}"
 )
 SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace"
@@ -383,7 +385,7 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
         left = f"M{n(cx - fa)} {n(cy)}l{n(fa)} {n(fb)}v{n(-h)}l{n(-fa)} {n(-fb)}z"
         right = f"M{n(cx)} {n(cy + fb)}l{n(fa)} {n(-fb)}v{n(-h)}l{n(-fa)} {n(fb)}z"
         top = f"M{n(cx)} {n(cy - fb - h)}l{n(fa)} {n(fb)}l{n(-fa)} {n(fb)}l{n(-fa)} {n(-fb)}z"
-        delay = 0.15 + week * 0.02 + dow * 0.012
+        delay = 0.05 + week * 0.008 + dow * 0.005
         blocks.append(
             f'<g class="k" style="transform-origin:{n(cx)}px {n(cy + fb)}px;animation-delay:{delay:.2f}s">'
             f'<path class="l{lv}" d="{left}"/><path class="r{lv}" d="{right}"/><path class="t{lv}" d="{top}"/></g>'
@@ -504,7 +506,7 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
             bright = f' style="fill:{TEXT}"' if best else ""
             parts.append(
                 f'<rect class="bar" x="{n(x)}" y="{n(base - h)}" width="{n(bar)}" height="{n(h)}" rx="3" '
-                f'fill="url(#bars)" opacity="{1 if best else .6}" style="animation-delay:{delay + index * .05:.2f}s"/>'
+                f'fill="url(#bars)" opacity="{1 if best else .6}" style="animation-delay:{delay + index * .03:.2f}s"/>'
                 f'<text class="mono tick" x="{n(x + bar / 2)}" y="216" text-anchor="middle"'
                 f'{bright}>{names[index]}</text>'
             )
@@ -537,14 +539,14 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
     body = f"""
 <text class="cap" x="44" y="44">BY MONTH</text>
 <text class="say" x="44" y="68">{top_month} was the peak</text>
-{bars(month_values, [name for name, _, _ in by_month], 44, 372, 19, .1)}
+{bars(month_values, [name for name, _, _ in by_month], 44, 372, 19, .05)}
 <path d="M440 36V{height - 30}M684 36V{height - 30}" stroke="{LINE}"/>
 <text class="cap" x="464" y="44">BY WEEKDAY</text>
 <text class="say" x="464" y="68">{top_weekday} run hottest</text>
-{bars(by_weekday, WEEKDAYS, 464, 196, 17, .4)}
+{bars(by_weekday, WEEKDAYS, 464, 196, 17, .2)}
 <text class="cap" x="708" y="44">BY YEAR</text>
 <text class="say" x="708" y="68">{year_line}</text>
-{bars([count for _, count in by_year], [str(y) for y, _ in by_year], 708, 132, min(24, 132 / len(by_year) - 10), .7)}
+{bars([count for _, count in by_year], [str(y) for y, _ in by_year], 708, 132, min(24, 132 / len(by_year) - 10), .35)}
 """
     return svg(width, height, "Contributions by month, weekday and year", css, defs, body)
 
