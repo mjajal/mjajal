@@ -35,6 +35,21 @@ MUTED = "#8b949e"
 DIM = "#6e7681"
 RED = "#ff3b3b"
 GREENS = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"]
+# the bars replay every LOOP seconds and step through these colours, then start over
+LOOP = 15
+PALETTES = [
+    GREENS,
+    ["#161b22", "#5a2a00", "#9c4a00", "#e07b00", "#ffa630"],  # orange
+    ["#161b22", "#5c1010", "#9b1c1c", "#dc3535", "#ff6b6b"],  # red
+    ["#161b22", "#0c2d6b", "#1158c7", "#388bfd", "#79c0ff"],  # blue
+]
+# up fast, hold, drop, then stay down until the next loop (the colour switches while down)
+REPLAY = (
+    "0%{transform:scaleY(0);animation-timing-function:cubic-bezier(.2,.8,.2,1)}"
+    "6%{transform:scaleY(1)}"
+    "88%{transform:scaleY(1);animation-timing-function:ease-in}"
+    "90%,100%{transform:scaleY(0)}"
+)
 SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace"
 
@@ -60,6 +75,17 @@ def n(value: float) -> str:
     """Short number for SVG coordinates."""
     text = f"{value:.1f}"
     return text[:-2] if text.endswith(".0") else text
+
+
+def colour_steps(name: str, colours: list[str], props: tuple[str, ...]) -> str:
+    """Keyframes that hold each colour for one loop, then jump to the next."""
+    share = 100 / len(colours)
+    frames = []
+    for index, colour in enumerate(colours):
+        rule = ";".join(f"{prop}:{colour}" for prop in props)
+        end = "100" if index == len(colours) - 1 else f"{(index + 1) * share - 0.01:.2f}"
+        frames.append(f"{index * share:.2f}%,{end}%{{{rule}}}")
+    return f"@keyframes {name}{{{''.join(frames)}}}"
 
 
 def shade(color: str, factor: float) -> str:
@@ -400,14 +426,18 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
     if all_time >= total * 1.2:
         since = f'<text class="sub" x="{width - 40}" y="152" text-anchor="end">{all_time:,} since {FIRST_YEAR}</text>'
 
-    faces = "".join(
-        f".t{lv}{{fill:{GREENS[lv]};stroke:{GREENS[lv]}}}"
-        f".l{lv}{{fill:{shade(GREENS[lv], .72)};stroke:{shade(GREENS[lv], .72)}}}"
-        f".r{lv}{{fill:{shade(GREENS[lv], .48)};stroke:{shade(GREENS[lv], .48)}}}"
-        for lv in range(1, 5)
-    )
+    faces = ""
+    for lv in range(1, 5):
+        for face, dim in (("t", 1.0), ("l", .72), ("r", .48)):
+            first = shade(GREENS[lv], dim)
+            colours = [shade(palette[lv], dim) for palette in PALETTES]
+            faces += (
+                f".{face}{lv}{{fill:{first};stroke:{first};"
+                f"animation:c{face}{lv} {LOOP * len(PALETTES)}s linear infinite}}"
+                + colour_steps(f"c{face}{lv}", colours, ("fill", "stroke"))
+            )
     css = f"""
-.k{{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}}
+.k{{animation:rise {LOOP}s infinite backwards}}
 .k path{{stroke-width:.4;stroke-linejoin:round}}
 {faces}
 .mon{{font-size:10px;fill:{DIM}}}
@@ -416,7 +446,7 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
 .sub{{font-size:12px;fill:{MUTED}}}
 .num{{font-size:26px;font-weight:700}}
 .foot{{font-size:11px;fill:{DIM}}}
-@keyframes rise{{from{{transform:scaleY(0)}}to{{transform:scaleY(1)}}}}
+@keyframes rise{{{REPLAY}}}
 """
     defs = f"""
 <radialGradient id="floor" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(440 300) scale(520 240)"><stop stop-color="{GREENS[3]}" stop-opacity=".09"/><stop offset="1" stop-color="{GREENS[3]}" stop-opacity="0"/></radialGradient>
@@ -494,12 +524,15 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
 .say{{font-size:15px;font-weight:600}}
 .tick{{font-size:10px;fill:{DIM}}}
 .val{{font-size:10px;fill:{SOFT}}}
-.bar{{transform-origin:0 {base:.0f}px;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}}
-@keyframes grow{{from{{transform:scaleY(0)}}to{{transform:scaleY(1)}}}}
+.bar{{transform-origin:0 {base:.0f}px;animation:grow {LOOP}s infinite backwards}}
+.hi{{animation:hi {LOOP * len(PALETTES)}s linear infinite}}.lo{{animation:lo {LOOP * len(PALETTES)}s linear infinite}}
+{colour_steps('hi', [palette[4] for palette in PALETTES], ('stop-color',))}
+{colour_steps('lo', [palette[2] for palette in PALETTES], ('stop-color',))}
+@keyframes grow{{{REPLAY}}}
 """
     defs = (
         f'<linearGradient id="bars" gradientUnits="userSpaceOnUse" x1="0" y1="{base - tallest:.0f}" x2="0" y2="{base:.0f}">'
-        f'<stop stop-color="{GREENS[4]}"/><stop offset="1" stop-color="{GREENS[2]}"/></linearGradient>'
+        f'<stop class="hi" stop-color="{GREENS[4]}"/><stop class="lo" offset="1" stop-color="{GREENS[2]}"/></linearGradient>'
     )
     body = f"""
 <text class="cap" x="44" y="44">BY MONTH</text>
