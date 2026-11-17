@@ -3,7 +3,7 @@
 <p align="center">
   <b>Hi, I'm Maulik Jajal.</b> Data trailblazer, AI agent mastermind, relentless troubleshooter, and data-platform architect.
   <br />
-  <sub><i>Usually all four before lunch.</i> ☕⚡</sub>
+  <i>Usually all four before lunch.</i> ☕⚡
 </p>
 
 <p align="center">
