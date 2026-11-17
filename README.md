@@ -1,9 +1,6 @@
 <img src="./assets/header.svg" width="100%" alt="Maulik Jajal, Senior Data Engineer. Data trailblazer, AI agent mastermind, relentless troubleshooter, data-platform architect." />
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/intro-dark.svg" />
-  <img src="./assets/intro-light.svg" width="100%" alt="Hi, I'm Maulik Jajal. Data trailblazer, AI agent mastermind, relentless troubleshooter, and data-platform architect. Usually all four before lunch." />
-</picture>
+<img src="./assets/intro.svg" width="100%" alt="Hi, I'm Maulik Jajal. Data trailblazer, AI agent mastermind, relentless troubleshooter, and data-platform architect. Usually all four before lunch." />
 
 <p align="center">
   <a href="https://www.linkedin.com/in/maulik-jajal/" target="_blank" rel="noopener noreferrer"><img src="./assets/linkedin.svg" height="42" alt="Let's talk on LinkedIn" /></a>

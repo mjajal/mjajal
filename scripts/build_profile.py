@@ -594,21 +594,21 @@ def build_linkedin() -> str:
 
 
 # -------------------------------------------------------------- intro lines
-def build_intro(color: str, soft: str) -> str:
-    """The two intro lines, drawn so the first one spans the full page width."""
-    width, height = 880, 74
+def build_intro() -> str:
+    """The two intro lines on a dark card, so they read the same in any theme."""
+    width, height = 880, 96
     emoji = "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji'"
-    return (
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" '
-        f'role="img" aria-label="Hi, I am Maulik Jajal. Data trailblazer, AI agent mastermind, relentless troubleshooter, '
-        f'and data-platform architect. Usually all four before lunch.">'
-        f'<text x="20" y="27" textLength="840" lengthAdjust="spacingAndGlyphs" font-family="{SANS}" font-size="17" fill="{color}">'
+    css = f".one{{font-size:17px}}.two{{font-size:17px;fill:{SOFT};font-family:{SANS},{emoji}}}"
+    body = (
+        f'<text class="one" x="28" y="40" textLength="824" lengthAdjust="spacingAndGlyphs">'
         f'<tspan font-weight="700">Hi, I&#39;m Maulik Jajal.</tspan> Data trailblazer, AI agent mastermind, '
         f'relentless troubleshooter, and data-platform architect.</text>'
-        f'<text x="{width / 2:.0f}" y="60" text-anchor="middle" font-family="{SANS},{emoji}" font-size="17" fill="{soft}">'
+        f'<text class="two" x="{width / 2:.0f}" y="72" text-anchor="middle">'
         f'<tspan font-style="italic">Usually all four before lunch.</tspan> ☕⚡</text>'
-        f"</svg>\n"
     )
+    label = ("Hi, I am Maulik Jajal. Data trailblazer, AI agent mastermind, relentless troubleshooter, "
+             "and data-platform architect. Usually all four before lunch.")
+    return svg(width, height, label, css, "", body)
 
 
 def main() -> None:
@@ -621,8 +621,7 @@ def main() -> None:
         "rhythm.svg": build_rhythm(days, today),
         "journey.svg": build_journey(),
         "linkedin.svg": build_linkedin(),
-        "intro-dark.svg": build_intro(TEXT, SOFT),
-        "intro-light.svg": build_intro("#1f2328", "#59636e"),
+        "intro.svg": build_intro(),
     }
     for name, content in cards.items():
         (ASSETS / name).write_text(content, encoding="utf-8", newline="\n")
