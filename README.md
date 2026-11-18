@@ -88,7 +88,52 @@
 
 Eight years of healthcare data across payers, providers, emergency departments and digital health, from EHR feeds and claims to FHIR.
 
-<img src="./assets/healthcare.svg" width="100%" alt="Standards and programs: FHIR, HL7, X12 837/835, CMS interoperability, Medicare Advantage, value-based care, wellness rewards. Systems and data: Epic, Cerner, Meditech, ED data, hospitalist, revenue cycle, claims, eligibility, clinical, wearables, member matching. Code sets: ICD-9/ICD-10, CPT, HCPCS, LOINC, SNOMED CT, RxNorm, NDC. Privacy and compliance: HIPAA, PHI/PII, de-identification, data residency, PAM, JIT access, SOC 2." />
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <b>Standards and programs</b><br />
+      <img alt="FHIR" src="https://img.shields.io/badge/-FHIR-E05D44?style=flat-square" />
+      <img alt="HL7" src="https://img.shields.io/badge/-HL7-E05D44?style=flat-square" />
+      <img alt="X12 837 / 835" src="https://img.shields.io/badge/-X12_837_%2F_835-E05D44?style=flat-square" />
+      <img alt="CMS interoperability" src="https://img.shields.io/badge/-CMS_interoperability-E05D44?style=flat-square" />
+      <img alt="Medicare Advantage" src="https://img.shields.io/badge/-Medicare_Advantage-E05D44?style=flat-square" />
+      <img alt="Value-based care" src="https://img.shields.io/badge/-Value--based_care-E05D44?style=flat-square" />
+      <img alt="Wellness rewards" src="https://img.shields.io/badge/-Wellness_rewards-E05D44?style=flat-square" />
+      <br /><br />
+      <b>Code sets</b><br />
+      <img alt="ICD-9 / ICD-10" src="https://img.shields.io/badge/-ICD--9_%2F_ICD--10-6B4FBB?style=flat-square" />
+      <img alt="CPT" src="https://img.shields.io/badge/-CPT-6B4FBB?style=flat-square" />
+      <img alt="HCPCS" src="https://img.shields.io/badge/-HCPCS-6B4FBB?style=flat-square" />
+      <img alt="LOINC" src="https://img.shields.io/badge/-LOINC-6B4FBB?style=flat-square" />
+      <img alt="SNOMED CT" src="https://img.shields.io/badge/-SNOMED_CT-6B4FBB?style=flat-square" />
+      <img alt="RxNorm" src="https://img.shields.io/badge/-RxNorm-6B4FBB?style=flat-square" />
+      <img alt="NDC" src="https://img.shields.io/badge/-NDC-6B4FBB?style=flat-square" />
+    </td>
+    <td width="50%" valign="top">
+      <b>Systems and data</b><br />
+      <img alt="Epic" src="https://img.shields.io/badge/-Epic-0E7C86?style=flat-square" />
+      <img alt="Cerner" src="https://img.shields.io/badge/-Cerner-0E7C86?style=flat-square" />
+      <img alt="Meditech" src="https://img.shields.io/badge/-Meditech-0E7C86?style=flat-square" />
+      <img alt="ED data" src="https://img.shields.io/badge/-ED_data-0E7C86?style=flat-square" />
+      <img alt="Hospitalist" src="https://img.shields.io/badge/-Hospitalist-0E7C86?style=flat-square" />
+      <img alt="Eligibility" src="https://img.shields.io/badge/-Eligibility-0E7C86?style=flat-square" />
+      <img alt="Claims" src="https://img.shields.io/badge/-Claims-0E7C86?style=flat-square" />
+      <img alt="Clinical" src="https://img.shields.io/badge/-Clinical-0E7C86?style=flat-square" />
+      <img alt="Revenue cycle" src="https://img.shields.io/badge/-Revenue_cycle-0E7C86?style=flat-square" />
+      <img alt="Wearables" src="https://img.shields.io/badge/-Wearables-0E7C86?style=flat-square" />
+      <img alt="Member matching" src="https://img.shields.io/badge/-Member_matching-0E7C86?style=flat-square" />
+      <br /><br />
+      <b>Privacy and compliance</b><br />
+      <img alt="HIPAA" src="https://img.shields.io/badge/-HIPAA-2E7D32?style=flat-square" />
+      <img alt="PHI / PII" src="https://img.shields.io/badge/-PHI_%2F_PII-2E7D32?style=flat-square" />
+      <img alt="De-identification" src="https://img.shields.io/badge/-De--identification-2E7D32?style=flat-square" />
+      <img alt="Data residency" src="https://img.shields.io/badge/-Data_residency-2E7D32?style=flat-square" />
+      <img alt="PAM" src="https://img.shields.io/badge/-PAM-2E7D32?style=flat-square" />
+      <img alt="JIT access" src="https://img.shields.io/badge/-JIT_access-2E7D32?style=flat-square" />
+      <img alt="SOC 2" src="https://img.shields.io/badge/-SOC_2-2E7D32?style=flat-square" />
+    </td>
+  </tr>
+</table>
 
 ### My work
 
