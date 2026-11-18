@@ -17,6 +17,7 @@
   <img alt="Terraform" src="https://img.shields.io/badge/-Terraform-844FBA?style=flat-square&logo=terraform&logoColor=white" />
   <img alt="Google Cloud" src="https://img.shields.io/badge/-Google_Cloud-4285F4?style=flat-square&logo=googlecloud&logoColor=white" />
   <img alt="BigQuery" src="https://img.shields.io/badge/-BigQuery-669DF6?style=flat-square&logo=googlebigquery&logoColor=white" />
+  <img alt="Healthcare API" src="https://img.shields.io/badge/-Healthcare_API-1A73E8?style=flat-square&logo=googlecloud&logoColor=white" />
   <img alt="MongoDB" src="https://img.shields.io/badge/-MongoDB-13AA52?style=flat-square&logo=mongodb&logoColor=white" />
   <img alt="Dataflow and Apache Beam" src="https://img.shields.io/badge/-Dataflow_%C2%B7_Beam-FF6D00?style=flat-square&logo=googledataflow&logoColor=white" />
   <img alt="Airflow" src="https://img.shields.io/badge/-Airflow-017CEE?style=flat-square&logo=apacheairflow&logoColor=white" />
@@ -25,7 +26,6 @@
   <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white" />
   <img alt="IAM" src="https://img.shields.io/badge/-IAM-D93025?style=flat-square" />
   <img alt="FHIR" src="https://img.shields.io/badge/-FHIR-E05D44?style=flat-square" />
-  <img alt="Healthcare API" src="https://img.shields.io/badge/-Healthcare_API-1A73E8?style=flat-square&logo=googlecloud&logoColor=white" />
   <img alt="Snowflake" src="https://img.shields.io/badge/-Snowflake-29B5E8?style=flat-square&logo=snowflake&logoColor=white" />
   <img alt="Kafka" src="https://img.shields.io/badge/-Kafka-3A3A3A?style=flat-square&logo=apachekafka&logoColor=white" />
   <img alt="Redis" src="https://img.shields.io/badge/-Redis-FF4438?style=flat-square&logo=redis&logoColor=white" />
