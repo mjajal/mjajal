@@ -646,6 +646,57 @@ def build_intro() -> str:
     return svg(width, height, label, css, "", body)
 
 
+# --------------------------------------------------------- healthcare grid
+HEALTHCARE = [
+    ("Standards and programs", "#E05D44", ["FHIR", "HL7", "X12 837 / 835", "CMS interoperability",
+                                           "Medicare Advantage", "Value-based care", "Wellness rewards"]),
+    ("Systems and data", "#0E7C86", ["Epic", "Cerner", "Meditech", "Emergency department", "Hospitalist",
+                                     "Revenue cycle", "Claims", "Eligibility", "Clinical", "Wearables",
+                                     "Public health", "Member matching"]),
+    ("Code sets", "#6B4FBB", ["ICD-9 / ICD-10", "CPT", "HCPCS", "LOINC", "SNOMED CT", "RxNorm", "NDC"]),
+    ("Privacy and compliance", "#2E7D32", ["HIPAA", "PHI / PII", "De-identification", "Data residency",
+                                           "PAM", "JIT access", "SOC 2"]),
+]
+
+
+def build_healthcare() -> str:
+    """Two-by-two grid of healthcare terms. No card, no borders: it sits straight on the page."""
+    width, column = 880, 440
+    char_w, pad, pill_h, gap, line = 6.9, 9, 22, 6, 28
+
+    def cell(x0: float, y0: float, name: str, colour: str, items: list[str]) -> tuple[str, float]:
+        parts = [f'<text x="{x0}" y="{y0 + 13}" font-size="13.5" font-weight="700" fill="{colour}">{esc(name)}</text>']
+        x, y = x0, y0 + 24
+        for item in items:
+            text_w = len(item) * char_w
+            w = text_w + 2 * pad
+            if x + w > x0 + column - 24:
+                x, y = x0, y + line
+            parts.append(
+                f'<rect x="{n(x)}" y="{n(y)}" width="{n(w)}" height="{pill_h}" rx="3" fill="{colour}"/>'
+                f'<text x="{n(x + pad)}" y="{n(y + 15.5)}" font-size="12" font-weight="600" fill="#fff" '
+                f'textLength="{n(text_w)}" lengthAdjust="spacingAndGlyphs">{esc(item)}</text>'
+            )
+            x += w + gap
+        return "".join(parts), y + pill_h
+
+    body, top = [], 2.0
+    for row in (HEALTHCARE[:2], HEALTHCARE[2:]):
+        bottoms = []
+        for index, (name, colour, items) in enumerate(row):
+            markup, bottom = cell(index * column, top, name, colour, items)
+            body.append(markup)
+            bottoms.append(bottom)
+        top = max(bottoms) + 20
+    height = math.ceil(top - 20 + 4)
+    label = "Healthcare experience: " + "; ".join(f"{name}: {', '.join(items)}" for name, _, items in HEALTHCARE)
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" '
+        f'role="img" aria-label="{esc(label)}" font-family="{SANS}"><title>{esc(label)}</title>'
+        + "".join(body) + "</svg>\n"
+    )
+
+
 def main() -> None:
     today = dt.datetime.now(dt.timezone.utc).date()
     days = load_days(today)
@@ -657,6 +708,7 @@ def main() -> None:
         "journey.svg": build_journey(),
         "linkedin.svg": build_linkedin(),
         "intro.svg": build_intro(),
+        "healthcare.svg": build_healthcare(),
     }
     for name, content in cards.items():
         (ASSETS / name).write_text(content, encoding="utf-8", newline="\n")
