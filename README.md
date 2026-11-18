@@ -23,6 +23,7 @@
   <img alt="Pub/Sub" src="https://img.shields.io/badge/-Pub%2FSub-3367D6?style=flat-square&logo=googlepubsub&logoColor=white" />
   <img alt="Cloud Run" src="https://img.shields.io/badge/-Cloud_Run-1A73E8?style=flat-square&logo=googlecloud&logoColor=white" />
   <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white" />
+  <img alt="IAM" src="https://img.shields.io/badge/-IAM-D93025?style=flat-square" />
   <img alt="FHIR and HL7" src="https://img.shields.io/badge/-FHIR_%C2%B7_HL7-E05D44?style=flat-square" />
   <img alt="Snowflake" src="https://img.shields.io/badge/-Snowflake-29B5E8?style=flat-square&logo=snowflake&logoColor=white" />
   <img alt="Kafka" src="https://img.shields.io/badge/-Kafka-3A3A3A?style=flat-square&logo=apachekafka&logoColor=white" />
@@ -50,10 +51,13 @@
 <p>
   <img alt="AWS" src="https://img.shields.io/badge/-AWS-FF9900?style=flat-square" />
   <img alt="S3" src="https://img.shields.io/badge/-S3-569A31?style=flat-square" />
+  <img alt="EC2" src="https://img.shields.io/badge/-EC2-FF9900?style=flat-square" />
+  <img alt="IAM" src="https://img.shields.io/badge/-IAM-DD344C?style=flat-square" />
   <img alt="Glue" src="https://img.shields.io/badge/-Glue-8C4FFF?style=flat-square" />
   <img alt="Redshift" src="https://img.shields.io/badge/-Redshift-205B97?style=flat-square" />
   <img alt="Athena" src="https://img.shields.io/badge/-Athena-6B3FD4?style=flat-square" />
   <img alt="SageMaker" src="https://img.shields.io/badge/-SageMaker-01A88D?style=flat-square" />
+  <img alt="Comprehend Medical" src="https://img.shields.io/badge/-Comprehend_Medical-01A88D?style=flat-square" />
   <img alt="Spark" src="https://img.shields.io/badge/-Spark-E25A1C?style=flat-square&logo=apachespark&logoColor=white" />
   <img alt="Databricks" src="https://img.shields.io/badge/-Databricks-FF3621?style=flat-square&logo=databricks&logoColor=white" />
   <img alt="PostgreSQL" src="https://img.shields.io/badge/-PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white" />
@@ -78,6 +82,62 @@
   <img alt="Tableau" src="https://img.shields.io/badge/-Tableau-E97627?style=flat-square" />
   <img alt="SAP BusinessObjects" src="https://img.shields.io/badge/-SAP_BusinessObjects-0FAAFF?style=flat-square&logo=sap&logoColor=white" />
 </p>
+
+### Where I've used it: healthcare
+
+Eight years of healthcare data across payers, providers, emergency departments and digital health, from EHR feeds and claims to FHIR.
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <b>Standards and programs</b><br />
+      <img alt="FHIR" src="https://img.shields.io/badge/-FHIR-E05D44?style=flat-square" />
+      <img alt="HL7" src="https://img.shields.io/badge/-HL7-E05D44?style=flat-square" />
+      <img alt="X12 837 / 835" src="https://img.shields.io/badge/-X12_837_%2F_835-E05D44?style=flat-square" />
+      <img alt="CMS interoperability" src="https://img.shields.io/badge/-CMS_interoperability-E05D44?style=flat-square" />
+      <img alt="Medicare Advantage" src="https://img.shields.io/badge/-Medicare_Advantage-E05D44?style=flat-square" />
+      <img alt="Value-based care" src="https://img.shields.io/badge/-Value--based_care-E05D44?style=flat-square" />
+      <img alt="Wellness rewards" src="https://img.shields.io/badge/-Wellness_rewards-E05D44?style=flat-square" />
+    </td>
+    <td width="50%" valign="top">
+      <b>Systems and data</b><br />
+      <img alt="Epic" src="https://img.shields.io/badge/-Epic-0E7C86?style=flat-square" />
+      <img alt="Cerner" src="https://img.shields.io/badge/-Cerner-0E7C86?style=flat-square" />
+      <img alt="Meditech" src="https://img.shields.io/badge/-Meditech-0E7C86?style=flat-square" />
+      <img alt="Emergency department" src="https://img.shields.io/badge/-Emergency_department-0E7C86?style=flat-square" />
+      <img alt="Hospitalist" src="https://img.shields.io/badge/-Hospitalist-0E7C86?style=flat-square" />
+      <img alt="Revenue cycle" src="https://img.shields.io/badge/-Revenue_cycle-0E7C86?style=flat-square" />
+      <img alt="Claims" src="https://img.shields.io/badge/-Claims-0E7C86?style=flat-square" />
+      <img alt="Eligibility" src="https://img.shields.io/badge/-Eligibility-0E7C86?style=flat-square" />
+      <img alt="Clinical" src="https://img.shields.io/badge/-Clinical-0E7C86?style=flat-square" />
+      <img alt="Wearables" src="https://img.shields.io/badge/-Wearables-0E7C86?style=flat-square" />
+      <img alt="Public health" src="https://img.shields.io/badge/-Public_health-0E7C86?style=flat-square" />
+      <img alt="Member matching" src="https://img.shields.io/badge/-Member_matching-0E7C86?style=flat-square" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <b>Code sets</b><br />
+      <img alt="ICD-9 / ICD-10" src="https://img.shields.io/badge/-ICD--9_%2F_ICD--10-6B4FBB?style=flat-square" />
+      <img alt="CPT" src="https://img.shields.io/badge/-CPT-6B4FBB?style=flat-square" />
+      <img alt="HCPCS" src="https://img.shields.io/badge/-HCPCS-6B4FBB?style=flat-square" />
+      <img alt="LOINC" src="https://img.shields.io/badge/-LOINC-6B4FBB?style=flat-square" />
+      <img alt="SNOMED CT" src="https://img.shields.io/badge/-SNOMED_CT-6B4FBB?style=flat-square" />
+      <img alt="RxNorm" src="https://img.shields.io/badge/-RxNorm-6B4FBB?style=flat-square" />
+      <img alt="NDC" src="https://img.shields.io/badge/-NDC-6B4FBB?style=flat-square" />
+    </td>
+    <td width="50%" valign="top">
+      <b>Privacy and compliance</b><br />
+      <img alt="HIPAA" src="https://img.shields.io/badge/-HIPAA-2E7D32?style=flat-square" />
+      <img alt="PHI / PII" src="https://img.shields.io/badge/-PHI_%2F_PII-2E7D32?style=flat-square" />
+      <img alt="De-identification" src="https://img.shields.io/badge/-De--identification-2E7D32?style=flat-square" />
+      <img alt="Data residency" src="https://img.shields.io/badge/-Data_residency-2E7D32?style=flat-square" />
+      <img alt="PAM" src="https://img.shields.io/badge/-PAM-2E7D32?style=flat-square" />
+      <img alt="JIT access" src="https://img.shields.io/badge/-JIT_access-2E7D32?style=flat-square" />
+      <img alt="SOC 2" src="https://img.shields.io/badge/-SOC_2-2E7D32?style=flat-square" />
+    </td>
+  </tr>
+</table>
 
 ### My work
 
