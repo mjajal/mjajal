@@ -88,7 +88,7 @@
 
 Eight years of healthcare data across payers, providers, emergency departments and digital health, from EHR feeds and claims to FHIR.
 
-<img src="./assets/healthcare.svg" width="100%" alt="Standards and programs: FHIR, HL7, X12 837/835, CMS interoperability, Medicare Advantage, value-based care, wellness rewards. Systems and data: Epic, Cerner, Meditech, emergency department, hospitalist, revenue cycle, claims, eligibility, clinical, wearables, public health, member matching. Code sets: ICD-9/ICD-10, CPT, HCPCS, LOINC, SNOMED CT, RxNorm, NDC. Privacy and compliance: HIPAA, PHI/PII, de-identification, data residency, PAM, JIT access, SOC 2." />
+<img src="./assets/healthcare.svg" width="100%" alt="Standards and programs: FHIR, HL7, X12 837/835, CMS interoperability, Medicare Advantage, value-based care, wellness rewards. Systems and data: Epic, Cerner, Meditech, ED data, hospitalist, revenue cycle, claims, eligibility, clinical, wearables, member matching. Code sets: ICD-9/ICD-10, CPT, HCPCS, LOINC, SNOMED CT, RxNorm, NDC. Privacy and compliance: HIPAA, PHI/PII, de-identification, data residency, PAM, JIT access, SOC 2." />
 
 ### My work
 

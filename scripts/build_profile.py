@@ -650,25 +650,47 @@ def build_intro() -> str:
 HEALTHCARE = [
     ("Standards and programs", "#E05D44", ["FHIR", "HL7", "X12 837 / 835", "CMS interoperability",
                                            "Medicare Advantage", "Value-based care", "Wellness rewards"]),
-    ("Systems and data", "#0E7C86", ["Epic", "Cerner", "Meditech", "Emergency department", "Hospitalist",
-                                     "Revenue cycle", "Claims", "Eligibility", "Clinical", "Wearables",
-                                     "Public health", "Member matching"]),
+    ("Systems and data", "#0E7C86", ["Epic", "Cerner", "Meditech", "ED data", "Claims", "Eligibility", "Clinical",
+                                     "Hospitalist", "Revenue cycle", "Wearables", "Member matching"]),
     ("Code sets", "#6B4FBB", ["ICD-9 / ICD-10", "CPT", "HCPCS", "LOINC", "SNOMED CT", "RxNorm", "NDC"]),
     ("Privacy and compliance", "#2E7D32", ["HIPAA", "PHI / PII", "De-identification", "Data residency",
                                            "PAM", "JIT access", "SOC 2"]),
 ]
 
 
+def text_width(text: str, size: float) -> float:
+    """Rough width of semibold sans text, so each pill hugs its label."""
+    total = 0.0
+    for ch in text:
+        if ch in "iljI.,'|":
+            total += 0.27
+        elif ch in " ":
+            total += 0.28
+        elif ch in "ftr-/":
+            total += 0.37
+        elif ch in "MW":
+            total += 0.92
+        elif ch in "mw":
+            total += 0.84
+        elif ch.isdigit():
+            total += 0.57
+        elif ch.isupper():
+            total += 0.66
+        else:
+            total += 0.56
+    return total * size
+
+
 def build_healthcare() -> str:
     """Two-by-two grid of healthcare terms. No card, no borders: it sits straight on the page."""
     width, column = 880, 440
-    char_w, pad, pill_h, gap, line = 6.9, 9, 22, 6, 28
+    pad, pill_h, gap, line = 9, 22, 6, 28
 
     def cell(x0: float, y0: float, name: str, colour: str, items: list[str]) -> tuple[str, float]:
         parts = [f'<text x="{x0}" y="{y0 + 13}" font-size="13.5" font-weight="700" fill="{colour}">{esc(name)}</text>']
         x, y = x0, y0 + 24
         for item in items:
-            text_w = len(item) * char_w
+            text_w = text_width(item, 12)
             w = text_w + 2 * pad
             if x + w > x0 + column - 24:
                 x, y = x0, y + line
