@@ -202,8 +202,8 @@ def load_days(today: dt.date) -> dict[str, int]:
     return {date: count for date, count in days.items() if date <= today.isoformat()}
 
 
-def streaks(days: dict[str, int], today: dt.date) -> tuple[int, int]:
-    """(longest streak, current streak) in days."""
+def streaks(days: dict[str, int], today: dt.date) -> tuple[int, int, int]:
+    """(longest streak, current streak, longest streak before the current one) in days."""
     one = dt.timedelta(days=1)
     longest = run = 0
     day = dt.date(FIRST_YEAR, 1, 1)
@@ -216,7 +216,14 @@ def streaks(days: dict[str, int], today: dt.date) -> tuple[int, int]:
     while days.get(day.isoformat(), 0):
         current += 1
         day -= one
-    return longest, current
+    # `day` is now the last day before the current streak began
+    previous = run = 0
+    cursor = dt.date(FIRST_YEAR, 1, 1)
+    while cursor <= day:
+        run = run + 1 if days.get(cursor.isoformat(), 0) else 0
+        previous = max(previous, run)
+        cursor += one
+    return longest, current, previous
 
 
 # ------------------------------------------------------------------- header
@@ -405,29 +412,38 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
 
     # headline numbers; anything too small to be worth showing is left out
     all_time = sum(days.values())
-    longest, current = streaks(days, today)
+    longest, current, previous = streaks(days, today)
     busiest = max(counts)
     active = sum(1 for count in counts if count)
     stats = []
-    if longest >= 5:
-        stats.append((f"{longest} days", "LONGEST STREAK"))
-    if busiest >= 25:
-        stats.append((f"{busiest}", "BUSIEST DAY"))
-    if active >= 30:
-        stats.append((f"{active}", "ACTIVE DAYS"))
     if current >= 3:
         stats.append((f"{current} days", "CURRENT STREAK"))
+        if previous >= 5:
+            stats.append((f"{previous} days", "PREVIOUS\nLONGEST STREAK"))
+    elif longest >= 5:
+        stats.append((f"{longest} days", "LONGEST STREAK"))
+    if active >= 30:
+        stats.append((f"{active}", "ACTIVE DAYS\nIN PAST YEAR"))
+    if busiest >= 25:
+        stats.append((f"{busiest}", "BUSIEST DAY"))
     stat_svg = []
-    for index, (value, caption) in enumerate(stats[:3]):
-        x = 44 + index * 132
+    x = 44
+    for value, caption in stats[:3]:
+        lines = caption.split("\n")  # a long caption sits on two lines
         stat_svg.append(
-            f'<text class="num" x="{x}" y="{height - 58}">{esc(value)}</text>'
-            f'<text class="cap" x="{x}" y="{height - 38}">{caption}</text>'
+            f'<text class="num" x="{x}" y="{height - 66}">'
+            + re.sub(r"^[\d,]+", lambda m: f'<tspan class="hl">{m.group()}</tspan>', esc(value))
+            + "</text>"
+            + "".join(
+                f'<text class="cap" x="{x}" y="{height - 46 + 15 * n}">{line}</text>'
+                for n, line in enumerate(lines)
+            )
         )
+        x += round(max(max(len(line) for line in lines) * 8.7, len(value) * 15)) + 28
 
     since = ""
     if all_time >= total * 1.2:
-        since = f'<text class="sub" x="{width - 40}" y="152" text-anchor="end">{all_time:,} since {FIRST_YEAR}</text>'
+        since = f'<text class="sub" x="{width - 40}" y="152" text-anchor="end"><tspan class="hl">{all_time:,}</tspan> since {FIRST_YEAR}</text>'
 
     faces = ""
     for lv in range(1, 5):
@@ -449,6 +465,8 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
 .sub{{font-size:12px;fill:{MUTED}}}
 .num{{font-size:26px;font-weight:700}}
 .foot{{font-size:11px;fill:{DIM}}}
+.hl{{fill:{GREENS[4]};animation:chl {LOOP * len(PALETTES)}s linear infinite}}
+{colour_steps('chl', [palette[4] for palette in PALETTES], ('fill',))}
 @keyframes rise{{{REPLAY}}}
 """
     defs = f"""
@@ -460,7 +478,7 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
 {''.join(blocks)}
 {''.join(labels)}
 <text class="cap" x="{width - 40}" y="52" text-anchor="end">LAST 12 MONTHS</text>
-<text class="big" x="{width - 40}" y="106" text-anchor="end">{total:,}</text>
+<text class="big hl" x="{width - 40}" y="106" text-anchor="end">{total:,}</text>
 <text class="lbl" x="{width - 40}" y="130" text-anchor="end">contributions</text>
 {since}
 {''.join(stat_svg)}
