@@ -46,6 +46,9 @@ PALETTES = [
     ["#161b22", "#2e1065", "#5b21b6", "#8b5cf6", "#c4b5fd"],  # purple
     ["#161b22", "#4d4000", "#8a7300", "#d4b106", "#ffe14d"],  # yellow
 ]
+# outline for the current-streak blocks, one per palette above: orange where it stands out,
+# cyan where the blocks themselves are orange, red or yellow
+GLOW = ["#ffa630", "#5fd7ff", "#5fd7ff", "#ffa630", "#ffa630", "#5fd7ff"]
 # up fast, hold, drop, then stay down until the next loop (the colour switches while down)
 REPLAY = (
     "0%{transform:scaleY(0);animation-timing-function:cubic-bezier(.2,.8,.2,1)}"
@@ -380,13 +383,32 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
     oy = 120.0
     fa, fb = a * 0.86, b * 0.86  # tiles sit slightly apart
 
-    ground, blocks = [], []
-    for index, (_, count) in enumerate(cells):
+    # markers on the skyline: the days of the current streak, the busiest day, today
+    longest, current, previous = streaks(days, today)
+    streak_end = today if days.get(today.isoformat(), 0) else today - one
+    streak_days = {streak_end - one * back for back in range(current)} if current >= 3 else set()
+    peak_index = max(range(len(cells)), key=lambda i: (cells[i][1], i)) if max(counts) else -1
+
+    def beacon(x: float, y: float, base: str) -> str:
+        """A pulsing red light, like the "now" dot on the timeline, on a red mast and a red-edged tile."""
+        return (
+            f'<path class="tb" d="{base}"/>'
+            f'<path class="tb" d="M{n(x)} {n(y)}v-9"/>'
+            f'<circle cx="{n(x)}" cy="{n(y - 11)}" r="2.6" fill="{RED}"><animate attributeName="r" values="2.6;9" dur="1.8s" repeatCount="indefinite"/>'
+            f'<animate attributeName="opacity" values=".55;0" dur="1.8s" repeatCount="indefinite"/></circle>'
+            f'<circle cx="{n(x)}" cy="{n(y - 11)}" r="2.6" fill="{RED}"/>'
+        )
+
+    ground, blocks, marks = [], [], []
+    for index, (date, count) in enumerate(cells):
         week, dow = divmod(index, 7)
         cx = ox + (week - dow) * a
         cy = oy + (week + dow) * b + b
         if not count:
-            ground.append(f"M{n(cx)} {n(cy - fb)}l{n(fa)} {n(fb)}l{n(-fa)} {n(fb)}l{n(-fa)} {n(-fb)}z")
+            tile = f"M{n(cx)} {n(cy - fb)}l{n(fa)} {n(fb)}l{n(-fa)} {n(fb)}l{n(-fa)} {n(-fb)}z"
+            ground.append(tile)
+            if date == today:
+                marks.append(beacon(cx, cy, tile))
             continue
         lv = level(count)
         h = 5 + 80 * (count / peak) ** 0.6
@@ -394,10 +416,43 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
         right = f"M{n(cx)} {n(cy + fb)}l{n(fa)} {n(-fb)}v{n(-h)}l{n(-fa)} {n(fb)}z"
         top = f"M{n(cx)} {n(cy - fb - h)}l{n(fa)} {n(fb)}l{n(-fa)} {n(fb)}l{n(-fa)} {n(-fb)}z"
         delay = 0.05 + week * 0.008 + dow * 0.005
+        # extras live inside the block's group so they rise and fall with it
+        extras = ""
+        if date in streak_days:
+            extras += f'<path class="sg" d="{top}"/>'
+        both = index == peak_index and date == today  # share one roof
+        if index == peak_index:
+            fx, fy = cx + (fa * 0.45 if both else 0), cy - h
+            right_side = fx < width - 110
+            tip = 9 if right_side else -9
+            anchor = "" if right_side else ' text-anchor="end"'
+            extras += (
+                f'<path class="mast" d="M{n(fx)} {n(fy)}v-17"/>'
+                f'<path class="fl hl" d="M{n(fx)} {n(fy - 17)}l{tip} 3.5l{-tip} 3.5z"/>'
+                f'<text class="mono pk" x="{n(fx + (13 if right_side else -13))}" y="{n(fy - 10)}"'
+                f'{anchor}>{MONTHS[date.month - 1]} {date.day}</text>'
+            )
+        if date == today:
+            extras += beacon(cx - (fa * 0.45 if both else 0), cy - h, top)
         blocks.append(
             f'<g class="k" style="transform-origin:{n(cx)}px {n(cy + fb)}px;animation-delay:{delay:.2f}s">'
-            f'<path class="l{lv}" d="{left}"/><path class="r{lv}" d="{right}"/><path class="t{lv}" d="{top}"/></g>'
+            f'<path class="l{lv}" d="{left}"/><path class="r{lv}" d="{right}"/><path class="t{lv}" d="{top}"/>{extras}</g>'
         )
+
+    # a small key for the markers, top left (the top right holds the year's total)
+    key = [(f'<circle cx="5" cy="-4" r="2.6" fill="{RED}"/>', "today")]
+    if streak_days:
+        key.append(('<path class="sg" d="M0 -4l5 -3.5l5 3.5l-5 3.5z"/>', "current streak"))
+    if peak_index >= 0:
+        key.append((f'<path d="M2 0v-9" stroke="{SOFT}"/><path class="hl" d="M2 -9l7 2.5l-7 2.5z"/>', "busiest day"))
+    kx = 44.0
+    key_svg = ""
+    for icon, text in key:
+        key_svg += (
+            f'<g transform="translate({n(kx)} 52)">{icon}'
+            f'<text class="foot" x="15" y="0">{text}</text></g>'
+        )
+        kx += 15 + len(text) * 5.7 + 16
 
     labels = []
     last_month = None
@@ -412,7 +467,6 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
 
     # headline numbers; anything too small to be worth showing is left out
     all_time = sum(days.values())
-    longest, current, previous = streaks(days, today)
     busiest = max(counts)
     active = sum(1 for count in counts if count)
     stats = []
@@ -459,6 +513,14 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
 .k{{animation:rise {LOOP}s infinite backwards}}
 .k path{{stroke-width:.4;stroke-linejoin:round}}
 {faces}
+.sg{{fill:none;stroke:{GLOW[0]};animation:sg 1.6s ease-in-out infinite alternate,csg {LOOP * len(PALETTES)}s linear infinite}}
+{colour_steps('csg', GLOW, ('stroke',))}
+.k .sg{{stroke-width:1.7}}
+@keyframes sg{{from{{stroke-opacity:.35}}to{{stroke-opacity:1}}}}
+.mast,.k .mast{{stroke:{SOFT};stroke-width:1}}
+.tb,.k .tb{{fill:none;stroke:{RED};stroke-width:1.4;stroke-linejoin:round}}
+.k .fl{{stroke:none}}
+.pk{{font-size:10px;fill:{SOFT}}}
 .mon{{font-size:10px;fill:{DIM}}}
 .big{{font-size:54px;font-weight:800;letter-spacing:-1px}}
 .lbl{{font-size:15px;fill:{SOFT}}}
@@ -476,7 +538,9 @@ def build_contrib3d(days: dict[str, int], today: dt.date) -> str:
 <g clip-path="url(#card)"><rect width="{width}" height="{height}" fill="url(#floor)"/></g>
 <path d="{''.join(ground)}" fill="{PANEL}" stroke="{LINE}" stroke-width=".6"/>
 {''.join(blocks)}
+{''.join(marks)}
 {''.join(labels)}
+{key_svg}
 <text class="cap" x="{width - 40}" y="52" text-anchor="end">LAST 12 MONTHS</text>
 <text class="big hl" x="{width - 40}" y="106" text-anchor="end">{total:,}</text>
 <text class="lbl" x="{width - 40}" y="130" text-anchor="end">contributions</text>
@@ -514,15 +578,18 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
     year_peak = max(count for _, count in by_year) or 1
     by_year = [(y, count) for y, count in by_year if count >= year_peak * 0.05]
 
-    def bars(values: list[int], names: list[str], x0: float, span: float, bar: float, delay: float) -> str:
+    def bars(values: list[int], names: list[str], x0: float, span: float, bar: float, delay: float,
+             trend: str = "") -> str:
+        """trend: "ltr" or "rtl" adds a line that draws itself across the bars in that direction."""
         peak = max(values) or 1
         pitch = span / len(values)
-        parts = []
+        parts, numbers, points = [], [], []
         for index, value in enumerate(values):
             h = max(2.0, tallest * value / peak)
             x = x0 + index * pitch + (pitch - bar) / 2
             best = value == peak
             bright = f' style="fill:{TEXT}"' if best else ""
+            points.append((x + bar / 2, base - h - 20))  # the trend line floats above the numbers
             parts.append(
                 f'<rect class="bar" x="{n(x)}" y="{n(base - h)}" width="{n(bar)}" height="{n(h)}" rx="3" '
                 f'fill="url(#bars)" opacity="{1 if best else .6}" style="animation-delay:{delay + index * .03:.2f}s"/>'
@@ -530,10 +597,21 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
                 f'{bright}>{names[index]}</text>'
             )
             if value >= peak * 0.25 and (best or len(values) <= 5):
-                parts.append(
-                    f'<text class="mono val" x="{n(x + bar / 2)}" y="{n(base - h - 6)}" text-anchor="middle">{value:,}</text>'
+                numbers.append(
+                    f'<text class="mono val{" halo" if trend else ""}" x="{n(x + bar / 2)}" y="{n(base - h - 6)}" text-anchor="middle">{value:,}</text>'
                 )
-        return "".join(parts)
+        line = ""
+        if trend and len(points) > 1:
+            # a line that draws itself from bar to bar once the bars are up, then leaves with them
+            if trend == "rtl":
+                points.reverse()
+            path = "M" + "L".join(f"{n(px)} {n(py)}" for px, py in points)
+            dots = "".join(f'<circle cx="{n(px)}" cy="{n(py)}" r="2.4"/>' for px, py in points)
+            line = (
+                f'<path class="trend" pathLength="1" d="{path}" style="animation-delay:{delay + .1:.2f}s"/>'
+                f'<g class="dots" style="animation-delay:{delay + .1:.2f}s">{dots}</g>'
+            )
+        return "".join(parts) + line + "".join(numbers)
 
     month_values = [value for _, value, _ in by_month]
     top_month = by_month[month_values.index(max(month_values))][2]
@@ -550,6 +628,11 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
 {colour_steps('hi', [palette[4] for palette in PALETTES], ('stop-color',))}
 {colour_steps('lo', [palette[2] for palette in PALETTES], ('stop-color',))}
 @keyframes grow{{{REPLAY}}}
+.halo{{paint-order:stroke;stroke:{BG};stroke-width:4px;stroke-linejoin:round}}
+.trend{{stroke:{TEXT};stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;animation:draw {LOOP}s infinite backwards}}
+.dots{{fill:{TEXT};animation:dots {LOOP}s infinite backwards}}
+@keyframes draw{{0%,18%{{stroke-dashoffset:1;opacity:1}}44%,80%{{stroke-dashoffset:0;opacity:1}}86%,100%{{stroke-dashoffset:0;opacity:0}}}}
+@keyframes dots{{0%,16%{{opacity:0}}22%,80%{{opacity:1}}86%,100%{{opacity:0}}}}
 """
     defs = (
         f'<linearGradient id="bars" gradientUnits="userSpaceOnUse" x1="0" y1="{base - tallest:.0f}" x2="0" y2="{base:.0f}">'
@@ -558,14 +641,14 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
     body = f"""
 <text class="cap" x="44" y="44">BY MONTH</text>
 <text class="say" x="44" y="68">{top_month} was the peak</text>
-{bars(month_values, [name for name, _, _ in by_month], 44, 372, 19, .05)}
+{bars(month_values, [name for name, _, _ in by_month], 44, 372, 19, .05, trend="ltr")}
 <path d="M440 36V{height - 30}M684 36V{height - 30}" stroke="{LINE}"/>
 <text class="cap" x="464" y="44">BY WEEKDAY</text>
 <text class="say" x="464" y="68">{top_weekday} run hottest</text>
-{bars(by_weekday, WEEKDAYS, 464, 196, 17, .2)}
+{bars(by_weekday, WEEKDAYS, 464, 196, 17, .2, trend="rtl")}
 <text class="cap" x="708" y="44">BY YEAR</text>
 <text class="say" x="708" y="68">{year_line}</text>
-{bars([count for _, count in by_year], [str(y) for y, _ in by_year], 708, 132, min(24, 132 / len(by_year) - 10), .35)}
+{bars([count for _, count in by_year], [str(y) for y, _ in by_year], 708, 132, min(24, 132 / len(by_year) - 10), .35, trend="ltr")}
 """
     return svg(width, height, "Contributions by month, weekday and year", css, defs, body)
 
