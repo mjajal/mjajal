@@ -16,6 +16,7 @@ import math
 import os
 import re
 import sys
+import textwrap
 import urllib.request
 from pathlib import Path
 
@@ -554,11 +555,13 @@ def build_rhythm(days: dict[str, int], today: dt.date) -> str:
 # ------------------------------------------------------------------ journey
 JOURNEY = [
     ("2023 → now", "League", "Senior Data Engineer → Senior Data Engineer II",
-     "GCP data platform: streaming + batch pipelines, zero-downtime migrations, AI agents + MCP",
+     "Healthcare data platform and backend services on GCP: real-time and batch pipelines, "
+     "zero-downtime migrations, a care LLM agent and its MCP server",
      "Raised the Floor for Everyone Award · Data Quality Achievement Award"),
     ("2022 → 2023", "Innovaccer", "Senior Data Engineer",
      "Multi-source FHIR pipelines and reusable integration templates on Snowflake and AWS", ""),
     ("2018 → 2022", "d2i", "Data Engineer → Senior Data Engineer",
+     "Built the core pipeline platform and led the data engineering team as it grew. "
      "Real-time and batch hospital data on AWS: EHR integrations, pipeline and platform automation", ""),
     ("2017 → 2018", "Stevens Institute of Technology", "M.S. Computer Science",
      "Master's Fellowship · Course Assistant for Data Structures & Algorithms", ""),
@@ -576,6 +579,7 @@ def build_journey() -> str:
     for index, (years, place, role, what, extra) in enumerate(JOURNEY):
         positions.append(y)
         now = index == 0
+        lines = textwrap.wrap(what, 96, break_on_hyphens=False)
         bright = f' style="fill:{TEXT}"' if now else ""
         dot = (
             f'<circle cx="176" cy="{y - 5}" r="5" fill="{RED}"><animate attributeName="r" values="5;13" dur="1.8s" repeatCount="indefinite"/>'
@@ -588,12 +592,16 @@ def build_journey() -> str:
             f'<text class="mono yrs" x="152" y="{y}" text-anchor="end"{bright}>{esc(years)}</text>'
             f"{dot}"
             f'<text class="place" x="202" y="{y}">{esc(place)}<tspan class="role" dx="10">{esc(role)}</tspan></text>'
-            f'<text class="what" x="202" y="{y + 21}">{esc(what)}</text>'
+            + "".join(
+                f'<text class="what" x="202" y="{y + 21 + 18 * n}">{esc(line)}</text>'
+                for n, line in enumerate(lines)
+            )
         )
+        more = 18 * (len(lines) - 1)  # a long description wraps onto a second line
         if extra:
-            rows.append(f'<text class="extra" x="202" y="{y + 41}">{esc(extra)}</text>')
+            rows.append(f'<text class="extra" x="202" y="{y + 41 + more}">{esc(extra)}</text>')
             y += 20
-        y += 64
+        y += 64 + more
     height = y - 64 + 21 + 34
     css = f"""
 .yrs{{font-size:12px;fill:{MUTED}}}

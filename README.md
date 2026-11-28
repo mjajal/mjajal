@@ -19,10 +19,15 @@
   <img alt="BigQuery" src="https://img.shields.io/badge/-BigQuery-669DF6?style=flat-square&logo=googlebigquery&logoColor=white" />
   <img alt="Healthcare API" src="https://img.shields.io/badge/-Healthcare_API-1A73E8?style=flat-square&logo=googlecloud&logoColor=white" />
   <img alt="MongoDB" src="https://img.shields.io/badge/-MongoDB-13AA52?style=flat-square&logo=mongodb&logoColor=white" />
+  <img alt="Firestore" src="https://img.shields.io/badge/-Firestore-FFA000?style=flat-square&logo=firebase&logoColor=white" />
   <img alt="Dataflow and Apache Beam" src="https://img.shields.io/badge/-Dataflow_%C2%B7_Beam-FF6D00?style=flat-square&logo=googledataflow&logoColor=white" />
   <img alt="Airflow" src="https://img.shields.io/badge/-Airflow-017CEE?style=flat-square&logo=apacheairflow&logoColor=white" />
   <img alt="Pub/Sub" src="https://img.shields.io/badge/-Pub%2FSub-3367D6?style=flat-square&logo=googlepubsub&logoColor=white" />
   <img alt="Cloud Run" src="https://img.shields.io/badge/-Cloud_Run-1A73E8?style=flat-square&logo=googlecloud&logoColor=white" />
+  <img alt="Cloud Functions" src="https://img.shields.io/badge/-Cloud_Functions-4285F4?style=flat-square&logo=googlecloud&logoColor=white" />
+  <img alt="REST and gRPC APIs" src="https://img.shields.io/badge/-REST_%C2%B7_gRPC_APIs-244C5A?style=flat-square" />
+  <img alt="FastAPI" src="https://img.shields.io/badge/-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
+  <img alt="Flask" src="https://img.shields.io/badge/-Flask-3A3A3A?style=flat-square&logo=flask&logoColor=white" />
   <img alt="Docker" src="https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white" />
   <img alt="IAM" src="https://img.shields.io/badge/-IAM-D93025?style=flat-square" />
   <img alt="FHIR" src="https://img.shields.io/badge/-FHIR-E05D44?style=flat-square" />
@@ -32,6 +37,9 @@
   <img alt="Bash" src="https://img.shields.io/badge/-Bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white" />
   <img alt="Kubernetes" src="https://img.shields.io/badge/-Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white" />
   <img alt="GitHub Actions" src="https://img.shields.io/badge/-GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white" />
+  <img alt="Prometheus" src="https://img.shields.io/badge/-Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white" />
+  <img alt="Grafana" src="https://img.shields.io/badge/-Grafana-F46800?style=flat-square&logo=grafana&logoColor=white" />
+  <img alt="Cloud Monitoring" src="https://img.shields.io/badge/-Cloud_Monitoring-4285F4?style=flat-square&logo=googlecloud&logoColor=white" />
   <img alt="Okta" src="https://img.shields.io/badge/-Okta-007DC1?style=flat-square&logo=okta&logoColor=white" />
   <img alt="Looker" src="https://img.shields.io/badge/-Looker-5A67D8?style=flat-square&logo=looker&logoColor=white" />
 </p>
@@ -43,6 +51,8 @@
   <img alt="ChatGPT and Codex" src="https://img.shields.io/badge/-ChatGPT_%C2%B7_Codex-10A37F?style=flat-square" />
   <img alt="Gemini" src="https://img.shields.io/badge/-Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white" />
   <img alt="Vertex AI" src="https://img.shields.io/badge/-Vertex_AI-9334E6?style=flat-square&logo=googlecloud&logoColor=white" />
+  <img alt="LLM agents" src="https://img.shields.io/badge/-LLM_agents-6B4FBB?style=flat-square" />
+  <img alt="Agent skills" src="https://img.shields.io/badge/-Agent_skills-C15F3C?style=flat-square" />
   <img alt="MCP servers" src="https://img.shields.io/badge/-MCP_servers-3A3A3A?style=flat-square&logo=modelcontextprotocol&logoColor=white" />
   <img alt="Cursor" src="https://img.shields.io/badge/-Cursor-3A3A3A?style=flat-square&logo=cursor&logoColor=white" />
 </p>
@@ -53,10 +63,10 @@
   <img alt="AWS" src="https://img.shields.io/badge/-AWS-FF9900?style=flat-square" />
   <img alt="S3" src="https://img.shields.io/badge/-S3-569A31?style=flat-square" />
   <img alt="EC2" src="https://img.shields.io/badge/-EC2-FF9900?style=flat-square" />
-  <img alt="IAM" src="https://img.shields.io/badge/-IAM-DD344C?style=flat-square" />
   <img alt="Glue" src="https://img.shields.io/badge/-Glue-8C4FFF?style=flat-square" />
   <img alt="Redshift" src="https://img.shields.io/badge/-Redshift-205B97?style=flat-square" />
   <img alt="Athena" src="https://img.shields.io/badge/-Athena-6B3FD4?style=flat-square" />
+  <img alt="Kinesis" src="https://img.shields.io/badge/-Kinesis-8C4FFF?style=flat-square" />
   <img alt="SageMaker" src="https://img.shields.io/badge/-SageMaker-01A88D?style=flat-square" />
   <img alt="Comprehend Medical" src="https://img.shields.io/badge/-Comprehend_Medical-01A88D?style=flat-square" />
   <img alt="Spark" src="https://img.shields.io/badge/-Spark-E25A1C?style=flat-square&logo=apachespark&logoColor=white" />
@@ -92,7 +102,6 @@ Eight years of healthcare data across payers, providers, emergency departments a
   <tr>
     <td width="50%" valign="top">
       <b>Standards and programs</b><br />
-      <img alt="FHIR" src="https://img.shields.io/badge/-FHIR-E05D44?style=flat-square" />
       <img alt="HL7" src="https://img.shields.io/badge/-HL7-E05D44?style=flat-square" />
       <img alt="X12 837 / 835" src="https://img.shields.io/badge/-X12_837_%2F_835-E05D44?style=flat-square" />
       <img alt="CMS interoperability" src="https://img.shields.io/badge/-CMS_interoperability-E05D44?style=flat-square" />
@@ -153,13 +162,16 @@ Eight years of healthcare data across payers, providers, emergency departments a
 
 ### What I geek out on
 
-- AI agents and MCP servers that take the busywork, so I can stay focused on data system architecture
-- Building ML, data science, LLM and RAG pipelines
-- Moving live data to a new home without anyone noticing it moved
+- Automating busywork with AI agents and MCP to focus on data architecture
+- Building healthcare software end to end, from data pipelines to user-facing features
 - Streaming and batch pipelines that stay boring in production
-- Chasing a bug to its root cause, not the nearest workaround
-- Healthcare data that actually talks to other healthcare data (FHIR, HL7)
-- Automation that takes real work off the on-call rotation
+- Moving live data to a new home without anyone noticing
+- Building ML and RAG pipelines and figuring out what improves their output
+- Turning experiments with coding agents into workflows my teammates can reuse
+- Getting healthcare systems to speak the same language with FHIR and HL7
+- Chasing a bug until I can explain why it happened
+- Working through tricky design decisions and helping other engineers find their footing
+- Designing privacy and security into systems from day one
 
 <p align="center">
   <a href="https://www.linkedin.com/in/maulik-jajal/" target="_blank" rel="noopener noreferrer"><img src="./assets/linkedin.svg" height="42" alt="Let's talk on LinkedIn" /></a>
